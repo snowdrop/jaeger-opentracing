@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (C) 2016 to the original authors.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.jboss.snowdrop</groupId>
+    <artifactId>spring-cloud-kubernetes-jaeger-parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Spring Cloud Kubernetes :: Project - Jaeger</name>
+    <description>Spring Cloud Kubernetes - Project - Jaeger</description>
+
+    <properties>
+        <jaeger.version>0.19.0</jaeger.version>
+        <opentracing.version>0.22.0</opentracing.version>
+        <opentracing.contrib.spring.autoconfigure.version>0.0.4</opentracing.contrib.spring.autoconfigure.version>
+        <spring-boot.version>1.5.3.RELEASE</spring-boot.version>
+        <spring-cloud-commons.version>1.2.0.RELEASE</spring-cloud-commons.version>
+        <spring-cloud-kubernetes.version>0.2.0.BUILD-SNAPSHOT</spring-cloud-kubernetes.version>
+
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-commons-dependencies</artifactId>
+                <version>${spring-cloud-commons.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-kubernetes-dependencies</artifactId>
+                <version>${spring-cloud-kubernetes.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Own dependencies -->
+            <dependency>
+                <groupId>org.jboss.snowdrop</groupId>
+                <artifactId>spring-cloud-kubernetes-jaeger</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- OpenTracing -->
+            <dependency>
+                <groupId>io.opentracing</groupId>
+                <artifactId>opentracing-noop</artifactId>
+                <version>${opentracing.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.opentracing.contrib</groupId>
+                <artifactId>opentracing-spring-web-autoconfigure</artifactId>
+                <version>${opentracing.contrib.spring.autoconfigure.version}</version>
+            </dependency>
+
+            <!-- OpenTracing implementation - Jaeger -->
+            <dependency>
+                <groupId>com.uber.jaeger</groupId>
+                <artifactId>jaeger-core</artifactId>
+                <version>${jaeger.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+
+        <!-- Spring Boot starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Spring Cloud -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-commons</artifactId>
+            <version>${spring-cloud-commons.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>${spring-cloud-commons.version}</version>
+        </dependency>
+
+        <!-- Spring Cloud Kubernetes -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-kubernetes-discovery</artifactId>
+        </dependency>
+    </dependencies>
+
+
+    <modules>
+        <module>spring-cloud-kubernetes-jaeger</module>
+        <module>spring-cloud-starter-kubernetes-jaeger</module>
+    </modules>
+
+</project>

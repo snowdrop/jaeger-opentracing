@@ -3,27 +3,18 @@ package org.jboss.snowdrop;
 import java.util.Collections;
 import java.util.regex.Pattern;
 
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import com.uber.jaeger.metrics.Metrics;
-import com.uber.jaeger.metrics.NullStatsReporter;
-import com.uber.jaeger.metrics.StatsFactoryImpl;
-import com.uber.jaeger.reporters.RemoteReporter;
-import com.uber.jaeger.samplers.ProbabilisticSampler;
-import com.uber.jaeger.senders.Sender;
-import com.uber.jaeger.senders.UdpSender;
-
 import feign.Logger;
 import feign.httpclient.ApacheHttpClient;
 import feign.hystrix.HystrixFeign;
 import feign.jackson.JacksonDecoder;
 import feign.opentracing.TracingClient;
 import feign.opentracing.hystrix.TracingConcurrencyStrategy;
-import io.opentracing.NoopTracerFactory;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.spring.web.autoconfig.WebTracingConfiguration;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Pavol Loffay
@@ -31,30 +22,9 @@ import io.opentracing.contrib.spring.web.autoconfig.WebTracingConfiguration;
 @Configuration
 public class TracingConfiguration {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(TracingConfiguration.class);
-    private static final String SERVICE_NAME = "ola";
 
-    @Bean
-    public Tracer tracer() {
-        String jaegerURL = System.getenv("JAEGER_SERVER_HOSTNAME");
-        if (jaegerURL != null) {
-            log.info("Using Jaeger tracer");
-            return jaegerTracer(jaegerURL);
-        }
-
-        log.info("Using Noop tracer");
-        return NoopTracerFactory.create();
-    }
-
-
-    private Tracer jaegerTracer(String url) {
-        Sender sender = new UdpSender(url, 0, 0);
-        return new com.uber.jaeger.Tracer.Builder(SERVICE_NAME,
-                new RemoteReporter(sender, 100, 50,
-                        new Metrics(new StatsFactoryImpl(new NullStatsReporter()))),
-                new ProbabilisticSampler(1.0))
-                .build();
-    }
-
+    @Autowired
+    public Tracer tracer;
 
     @Bean
     public WebTracingConfiguration webTracingConfiguration() {

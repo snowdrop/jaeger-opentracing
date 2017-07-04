@@ -129,6 +129,7 @@
     <modules>
         <module>spring-cloud-kubernetes-jaeger</module>
         <module>spring-cloud-starter-kubernetes-jaeger</module>
+        <module>spring-boot-jaeger-example</module>
     </modules>
 
 </project>
